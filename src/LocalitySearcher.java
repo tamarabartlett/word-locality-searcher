@@ -37,6 +37,7 @@ public class LocalitySearcher {
                 String currentWord = textStreamFromInputFile.get(currentWordIndex);
                 if (wordsAreMatching(otherSearchWord, currentWord)) {
                     wordsAreWithinProximity = true;
+                    break;
                 }
             }
         }
