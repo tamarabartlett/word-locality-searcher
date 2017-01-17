@@ -9,9 +9,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class LocalitySearcherTest {
 
-
-    int PROXIMITY_NUMBER = 3;
-
     @Test
     public void shouldFailWhenNeitherWordIsInStream() {
         List<String> words = Arrays.asList("no", "no", "no");

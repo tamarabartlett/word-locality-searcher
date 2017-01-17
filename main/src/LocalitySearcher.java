@@ -2,7 +2,7 @@ import java.util.List;
 
 public class LocalitySearcher {
     public boolean search(InputVariables input) {
-        List<String> textStreamFromInputFile = FileReader.getTextStreamFromFile(input.getFilename());
+        List<String> textStreamFromInputFile = InputFileReader.getTextStreamFromFile(input.getFilename());
 
         return findWordsInStream(textStreamFromInputFile, input.getFirstSearchWord(), input.getSecondSearchWord(), input.getProximityNumber());
     }

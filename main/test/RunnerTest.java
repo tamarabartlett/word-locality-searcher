@@ -47,9 +47,10 @@ public class RunnerTest {
 
     private String testTextFile() {
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("data/longer_text.txt").getFile());
+        File file = new File(classLoader.getResource("./resources/longer_text.txt").getFile());
         return file.getAbsolutePath();
     }
+
 
     @After
     public void cleanUpStreams() {

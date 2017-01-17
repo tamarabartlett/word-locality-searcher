@@ -1,14 +1,14 @@
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.FileReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class FileReader {
+public final class InputFileReader {
     public static List<String> getTextStreamFromFile(String filename) {
         try {
-            List<String> streamFromBufferedReader = createStreamFromBufferedReader(new BufferedReader(new java.io.FileReader(filename)));
+            List<String> streamFromBufferedReader = createStreamFromBufferedReader(new BufferedReader(new FileReader(filename)));
             return removeCapitalizationAndPunctuation(streamFromBufferedReader);
         } catch (Exception e) {
             System.out.println("Could not read stream from file");
