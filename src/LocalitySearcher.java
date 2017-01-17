@@ -1,27 +1,26 @@
 import java.util.List;
 
 public class LocalitySearcher {
-    public void search(String filename, String firstSearchWord, String secondSearchWord, String proximityNumber) {
-        List<String> textStreamFromInputFile = FileReader.getTextStreamFromFile(filename);
+    public boolean search(InputVariables input) {
+        List<String> textStreamFromInputFile = FileReader.getTextStreamFromFile(input.getFilename());
 
-        Boolean bothWordsInStream = findWordsInStream(textStreamFromInputFile, firstSearchWord, secondSearchWord);
+        return findWordsInStream(textStreamFromInputFile, input.getFirstSearchWord(), input.getSecondSearchWord(), input.getProximityNumber());
     }
 
-    public Boolean findWordsInStream(List<String> textStreamFromInputFile, String firstSearchWord, String secondSearchWord) {
+    public boolean findWordsInStream(List<String> textStreamFromInputFile, String firstSearchWord, String secondSearchWord, int proximityNumber) {
         boolean wordsNextToEachOther = false;
         int textStreamLength = textStreamFromInputFile.size();
 
-        for (int i = 0; i < textStreamLength; i++) {
-            String currentWord = textStreamFromInputFile.get(i);
-            int nextWordIndex = i + 1;
+        for (int currentWordIndex = 0; currentWordIndex < textStreamLength; currentWordIndex++) {
+            String currentWord = textStreamFromInputFile.get(currentWordIndex);
 
             if (wordsAreMatching(firstSearchWord, currentWord)) {
-                wordsNextToEachOther = wordsAreNextToEachOther(textStreamFromInputFile, secondSearchWord, nextWordIndex);
+                wordsNextToEachOther = wordsAreWithinProximityOfEachOther(textStreamFromInputFile, secondSearchWord, currentWordIndex, proximityNumber);
                 if (wordsNextToEachOther) break;
             }
 
             if (wordsAreMatching(secondSearchWord, currentWord)) {
-                wordsNextToEachOther = wordsAreNextToEachOther(textStreamFromInputFile, firstSearchWord, nextWordIndex);
+                wordsNextToEachOther = wordsAreWithinProximityOfEachOther(textStreamFromInputFile, firstSearchWord, currentWordIndex, proximityNumber);
                 if (wordsNextToEachOther) break;
             }
         }
@@ -29,15 +28,20 @@ public class LocalitySearcher {
         return wordsNextToEachOther;
     }
 
-    private boolean wordsAreNextToEachOther(List<String> textStreamFromInputFile, String otherWord, int nextWordIndex) {
-        boolean wordsNextToEachOther = false;
-        if (nextWordIndex < textStreamFromInputFile.size()) {
-            String nextWord = textStreamFromInputFile.get(nextWordIndex);
-            if (wordsAreMatching(otherWord, nextWord)) {
-                wordsNextToEachOther = true;
+    private boolean wordsAreWithinProximityOfEachOther(List<String> textStreamFromInputFile, String otherSearchWord, int searchWordIndex, int proximityNumber) {
+        boolean wordsAreWithinProximity = false;
+
+        for (int numberOfWordsPastSearchWord = 1; numberOfWordsPastSearchWord <= proximityNumber + 1; numberOfWordsPastSearchWord++) {
+            int currentWordIndex = searchWordIndex + numberOfWordsPastSearchWord;
+            if (currentWordIndex < textStreamFromInputFile.size()) {
+                String currentWord = textStreamFromInputFile.get(currentWordIndex);
+                if (wordsAreMatching(otherSearchWord, currentWord)) {
+                    wordsAreWithinProximity = true;
+                }
             }
         }
-        return wordsNextToEachOther;
+
+        return wordsAreWithinProximity;
     }
 
     private boolean wordsAreMatching(String firstSearchWord, String word) {

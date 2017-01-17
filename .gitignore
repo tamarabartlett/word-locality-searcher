@@ -1,3 +1,6 @@
 .idea/
 out/
 *.iml
+*.class
+test/data/
+web/
