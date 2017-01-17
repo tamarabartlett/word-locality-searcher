@@ -12,6 +12,10 @@ public class RunnerTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
+    String goodProximityNumber = "4";
+    String badProximityNumber = "1";
+
+
     @Before
     public void setUpStreams() {
         System.setOut(new PrintStream(outContent));
@@ -19,11 +23,7 @@ public class RunnerTest {
 
     @Test
     public void mainTestShouldSucceedWhenFirstSearchTermIsFirstInFile() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("data/longer_text.txt").getFile());
-        String absolutePathOfFile = file.getAbsolutePath();
-
-        String[] args = {absolutePathOfFile, "Armadillos", "Dogs", "4"};
+        String[] args = {testTextFile(), "Armadillos", "Dogs", goodProximityNumber};
         Runner runner = new Runner();
         runner.main(args);
         assertEquals("Both words were found proximal to one another\n", outContent.toString());
@@ -31,14 +31,24 @@ public class RunnerTest {
 
     @Test
     public void mainTestShouldSucceedWhenSecondSearchTermIsFirstInFile() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("data/longer_text.txt").getFile());
-        String absolutePathOfFile = file.getAbsolutePath();
+        String[] args = {testTextFile(), "Dogs", "Armadillos", goodProximityNumber};
+        Runner runner = new Runner();
+        runner.main(args);
+        assertEquals("Both words were found proximal to one another\n", outContent.toString());
+    }
 
-        String[] args = {absolutePathOfFile, "Dogs", "Armadillos", "1"};
+    @Test
+    public void mainTestShouldFailWhenWordsNotInProximity() {
+        String[] args = {testTextFile(), "Dogs", "Armadillos", badProximityNumber};
         Runner runner = new Runner();
         runner.main(args);
         assertEquals("The words were not found proximal to one another\n", outContent.toString());
+    }
+
+    private String testTextFile() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("data/longer_text.txt").getFile());
+        return file.getAbsolutePath();
     }
 
     @After

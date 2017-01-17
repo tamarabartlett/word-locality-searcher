@@ -17,19 +17,19 @@ public final class FileReader {
     }
 
     private static List<String> removeCapitalizationAndPunctuation(List<String> streamFromBufferedReader) {
-        return streamFromBufferedReader.stream().map(word -> word.toLowerCase().replaceAll("[^a-z]", "")).collect(Collectors.toList());
+        return streamFromBufferedReader
+                .stream()
+                .map(word -> word
+                        .toLowerCase()
+                        .replaceAll("[^a-z]", ""))
+                .collect(Collectors.toList());
     }
-
 
     private static List<String> createStreamFromBufferedReader(BufferedReader bufferedReader) throws IOException {
-        List<String> wordStream = new ArrayList<>();
-        String line = bufferedReader.readLine();
-        while (line != null) {
-            List<String> words = Arrays.asList(line.split(" "));
-            wordStream.addAll(words);
-            line = bufferedReader.readLine();
-        }
-        return wordStream;
+        return bufferedReader
+                .lines()
+                .map(line -> Arrays.asList(line.split(" ")))
+                .flatMap(x -> x.stream())
+                .collect(Collectors.toList());
     }
-
 }

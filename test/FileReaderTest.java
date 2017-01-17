@@ -17,7 +17,7 @@ public class FileReaderTest {
     public void shouldReturnBufferedReaderFromFile() throws IOException {
         List<String> textStreamFromFile = FileReader.getTextStreamFromFile("./test.txt");
         assertThat(textStreamFromFile, is(notNullValue()));
-        assertThat(textStreamFromFile.get(0), is("Test"));
+        assertThat(textStreamFromFile.get(0), is("test"));
     }
 
     @Test
